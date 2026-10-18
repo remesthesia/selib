@@ -1,9 +1,9 @@
 using BepInEx;
 
-namespace Template
+namespace SeLib
 {
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
-    public sealed class TemplatePlugin : BaseUnityPlugin
+    public sealed class SeLibPlugin : BaseUnityPlugin
     {
         
     }
