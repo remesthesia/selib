@@ -13,6 +13,7 @@ public abstract class ExtendedUnityPlugin<T> : ExtendedUnityPlugin where T : Ext
 [SuppressMessage("Class Declaration", "BepInEx001:Class inheriting from BaseUnityPlugin missing BepInPlugin attribute")]
 public abstract class ExtendedUnityPlugin : BaseUnityPlugin
 {
+    // ReSharper disable once InconsistentNaming
     public string GUID => Info.Metadata.GUID;
     public string Name => Info.Metadata.Name;
     public Version Version => Info.Metadata.Version;
