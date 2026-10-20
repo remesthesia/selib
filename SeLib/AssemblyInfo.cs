@@ -1,3 +1,6 @@
-using HG.Reflection;
+namespace SeLib;
 
-[assembly: SearchableAttribute.OptIn]
+public class AssemblyInfo
+{
+    
+}
