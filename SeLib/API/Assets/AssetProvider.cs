@@ -1,6 +1,11 @@
 namespace SeLib.API.Assets;
 
-public abstract class AssetProvider : INode
+public abstract class AssetProvider<T> : AssetProvider where T : AssetProvider<T>
 {
-    public BaseRoR2Plugin Owner { get; internal set; }
+    
+}
+
+public abstract class AssetProvider : BaseModule<AssetProvider, AssetNode>, IAssetBundleProvider
+{
+    
 }

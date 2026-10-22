@@ -1,37 +1,27 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 using BepInEx;
-using RoR2;
 using SeLib.API.Assets;
 using SeLib.API.Content;
+using SeLib.Core;
 
 namespace SeLib.API;
 
-[SuppressMessage("Class Declaration", "BepInEx001:Class inheriting from BaseUnityPlugin missing BepInPlugin attribute")]
 public abstract class BaseRoR2Plugin<T> : BaseRoR2Plugin where T : BaseRoR2Plugin<T>
 {
     public static T Instance { get; private set; }
-
-    private void Awake()
-    {
-    }
+    
+    private void Awake() => RoR2PluginManager.AddPlugin(Instance = this as T);
 }
 
-[SuppressMessage("Class Declaration", "BepInEx001:Class inheriting from BaseUnityPlugin missing BepInPlugin attribute")]
-public abstract class BaseRoR2Plugin : BaseUnityPlugin, INode
+public abstract class BaseRoR2Plugin : BaseUnityPlugin
 {
-    public BaseRoR2Plugin Owner => this;
-    
-    public AssetProvider Assets { get; private set; }
-    public ContentProvider[] Content { get; private set; }
-    
+    public bool IsDebug { get; internal set; }
+
+    public AssetProvider Assets { get; internal set; }
+    public IReadOnlyList<ContentProvider> Content { get; internal set; }
+
     internal BaseRoR2Plugin()
     {
-    }
-
-    private void Awake()
-    {
-        
     }
 }

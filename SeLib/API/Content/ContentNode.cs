@@ -1,7 +1,6 @@
 namespace SeLib.API.Content;
 
-public abstract class ContentNode : INode<ContentProvider>
+public abstract class ContentNode : BaseNode<ContentNode, ContentProvider>
 {
-    public BaseRoR2Plugin Owner => Parent.Owner;
-    public ContentProvider Parent { get; internal set; }
+    
 }

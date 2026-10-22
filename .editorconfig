@@ -1,0 +1,2 @@
+[*.cs]
+dotnet_diagnostic.BepInEx001.severity = none
