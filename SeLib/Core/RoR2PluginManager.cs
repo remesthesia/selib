@@ -43,9 +43,21 @@ internal static class RoR2PluginManager
         }
         
         plugin.Content = contentProviders;
-        
-        if (plugin.Assets != null) InitializeProvider(plugin.Assets);
-        foreach (var provider in plugin.Content) InitializeProvider(provider);
+
+        if (plugin.Assets != null)
+        {
+            var provider = plugin.Assets;
+            provider.Owner = plugin;
+            
+            InitializeProvider(provider);
+        }
+
+        foreach (var provider in plugin.Content)
+        {
+            provider.Owner = plugin;
+            
+            InitializeProvider(provider);
+        }
     }
 
     private static void InitializeProvider<T, V>(BaseProvider<T, V> provider) where T : BaseProvider<T, V> where V : BaseNode<V, T>
