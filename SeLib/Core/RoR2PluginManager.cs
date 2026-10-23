@@ -2,78 +2,68 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using HG.Reflection;
+using RoR2;
 using SeLib.API;
 using SeLib.API.Assets;
 using SeLib.API.Content;
+using SearchableAttribute = HG.Reflection.SearchableAttribute;
 
 namespace SeLib.Core;
 
 internal static class RoR2PluginManager
 {
-    private static Dictionary<Type, List<SeLibNode>> _plugins;
-    
+    public static IReadOnlyList<BaseRoR2Plugin> Plugins => _plugins;
+    public static bool IsDebug { get; private set; }
+
+    private static Dictionary<Type, List<SeLibNode>> _nodes;
+    private static readonly List<BaseRoR2Plugin> _plugins = [];
+
     public static void AddPlugin<T>(BaseRoR2Plugin<T> plugin) where T : BaseRoR2Plugin<T>
     {
-        plugin.IsDebug = typeof(T).IsDefined(typeof(DebuggableAttribute), true);
-
-        if (_plugins == null)
-        {
-            _plugins = new Dictionary<Type, List<SeLibNode>>();
-            var test = SearchableAttribute.GetInstances<SeLibNode>();
-            foreach (var node in test.Cast<SeLibNode>())
-            {
-                if (!_plugins.TryGetValue(node.Parent, out List<SeLibNode> list)) list = new List<SeLibNode>();
-                list.Add(node);
-            }
-        }
-
-        if (!_plugins.TryGetValue(typeof(T), out var attributes)) return;
+        IsDebug = IsDebug || (plugin.IsDebug = typeof(T).IsDefined(typeof(DebuggableAttribute), true));
+        _plugins.Add(plugin);
         
-        var c = new List<ContentProvider>();
-        foreach (var attribute in attributes)
+        InitializePlugin(plugin);
+    }
+
+    private static void InitializePlugin<T>(BaseRoR2Plugin<T> plugin) where T : BaseRoR2Plugin<T>
+    {
+        RoR2Application.onFixedUpdate += plugin.OnFixedUpdate;
+        RoR2Application.onUpdate += plugin.OnUpdate;
+        RoR2Application.onLateUpdate += plugin.OnLateUpdate;
+
+        if (_nodes == null) CollectNodes();
+        if (!_nodes!.TryGetValue(typeof(T), out var nodes)) return;
+
+        List<ContentProvider> contentProviders = [];
+        foreach (var node in nodes)
         {
-            if (attribute.Type.IsSubclassOf(typeof(AssetProvider))) 
-                plugin.Assets = Activator.CreateInstance(attribute.Type) as AssetProvider;
+            if (node.Type.IsSubclassOf(typeof(ContentProvider))) contentProviders.Add(Activator.CreateInstance(node.Type) as ContentProvider);
+            else if (node.Type.IsSubclassOf(typeof(AssetProvider))) plugin.Assets = Activator.CreateInstance(node.Type) as AssetProvider;
+        }
+        
+        plugin.Content = contentProviders;
+        
+        if (plugin.Assets != null) InitializeProvider(plugin.Assets);
+        foreach (var provider in plugin.Content) InitializeProvider(provider);
+    }
+
+    private static void InitializeProvider<T, V>(BaseProvider<T, V> provider) where T : BaseProvider<T, V> where V : BaseNode<V, T>
+    {
+        if (!_nodes.TryGetValue(provider.GetType(), out var nodes)) return;
+
+        provider.Children = [..nodes.Select(attribute => Activator.CreateInstance(attribute.Type) as V)];
+        provider.Init();
+    }
+
+    private static void CollectNodes()
+    {
+        _nodes = new Dictionary<Type, List<SeLibNode>>();
+        foreach (var node in SearchableAttribute.GetInstances<SeLibNode>().Cast<SeLibNode>())
+        {
+            if (!_nodes.TryGetValue(node.Parent, out var list)) list = [];
             
-            if (attribute.Type.IsSubclassOf(typeof(ContentProvider))) 
-                c.Add(Activator.CreateInstance(attribute.Type) as ContentProvider);
+            list.Add(node);
         }
-        
-        if (plugin.Assets != null)
-        {
-            if (!_plugins.TryGetValue(plugin.Assets.GetType(), out attributes)) return;
-            var idk = new List<AssetNode>();
-            foreach (var attribute in attributes)
-            {
-                idk.Add(Activator.CreateInstance(attribute.Type) as AssetNode);
-            }
-
-            plugin.Assets.Children = idk;
-        }
-        
-        
-
-        plugin.Content = c.AsReadOnly();
-        foreach (var content in plugin.Content)
-        {
-            if (!_plugins.TryGetValue(content.GetType(), out attributes)) return;
-
-            var idk = new List<ContentNode>();
-            foreach (var attribute in attributes)
-            {
-                idk.Add(Activator.CreateInstance(attribute.Type) as ContentNode);
-            }
-
-            content.Children = idk;
-        }
-        
-        plugin.Assets?.Init();
-        foreach (var content in plugin.Content)
-        {
-            content.Init();
-        }
-
-      
     }
 }

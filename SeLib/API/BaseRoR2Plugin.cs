@@ -16,12 +16,24 @@ public abstract class BaseRoR2Plugin<T> : BaseRoR2Plugin where T : BaseRoR2Plugi
 
 public abstract class BaseRoR2Plugin : BaseUnityPlugin
 {
-    public bool IsDebug { get; internal set; }
+    public virtual bool IsDebug { get; internal set; }
 
     public AssetProvider Assets { get; internal set; }
     public IReadOnlyList<ContentProvider> Content { get; internal set; }
 
     internal BaseRoR2Plugin()
+    {
+    }
+
+    public virtual void OnFixedUpdate()
+    {
+    }
+    
+    public virtual void OnUpdate()
+    {
+    }
+    
+    public virtual void OnLateUpdate()
     {
     }
 }

@@ -57,7 +57,7 @@ public abstract class ContentProvider<T> : ContentProvider where T : ContentProv
     }
 }
 
-public abstract class ContentProvider : BaseModule<ContentProvider, ContentNode>, IContentPackProvider
+public abstract class ContentProvider : BaseProvider<ContentProvider, ContentNode>, IContentPackProvider
 {
     public abstract string Identifier { get; }
     public virtual string EntityStateNamespace => string.Empty;

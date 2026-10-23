@@ -1,6 +1,6 @@
 namespace SeLib.API;
 
-public abstract class BaseNode<T, TV> : BaseNode where T : BaseNode<T, TV> where TV : BaseModule<TV, T>
+public abstract class BaseNode<T, TV> : BaseNode where T : BaseNode<T, TV> where TV : BaseProvider<TV, T>
 {
     public TV Parent { get; internal set; }
     
