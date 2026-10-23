@@ -25,15 +25,7 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
     {
     }
 
-    public virtual void OnFixedUpdate()
-    {
-    }
-    
-    public virtual void OnUpdate()
-    {
-    }
-    
-    public virtual void OnLateUpdate()
-    {
-    }
+    public virtual void OnFixedUpdate() { }
+    public virtual void OnUpdate() { }
+    public virtual void OnLateUpdate() { }
 }
