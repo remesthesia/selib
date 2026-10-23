@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using EntityStates;
 using RoR2.ContentManagement;
+using SeLib.Core;
 
 namespace SeLib.API.Content;
 

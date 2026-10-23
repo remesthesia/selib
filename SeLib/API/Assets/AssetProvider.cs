@@ -1,3 +1,5 @@
+using SeLib.Core;
+
 namespace SeLib.API.Assets;
 
 public abstract class AssetProvider<T> : AssetProvider where T : AssetProvider<T>
