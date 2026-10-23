@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using BepInEx;
 using SeLib.API.Assets;
 using SeLib.API.Content;
