@@ -10,7 +10,7 @@
 			https://nuget.bepinex.dev/v3/index.json
 		</RestoreAdditionalProjectSources>
 
-        <RootNamespace>Template</RootNamespace>
+        <RootNamespace>SeLib</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

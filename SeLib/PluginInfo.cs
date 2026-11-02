@@ -1,9 +1,9 @@
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
-namespace Template;
+namespace SeLib;
 
 public static class PluginInfo
 {
-    public const string GUID = "com.remesthesia.template";
-    public const string Name = "Template";
+    public const string GUID = "com.remesthesia.selib";
+    public const string Name = "SeLib";
     public const string Version = "1.0.0";
 }
