@@ -31,5 +31,4 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
         RoR2PluginManager.AddPlugin(this);
         OnRegister();
     }
-    
 }
