@@ -25,6 +25,9 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
     public virtual void OnRegister() { }
     public virtual void OnPostRegister() { }
 
+    public virtual void OnStart() { }
+    public virtual void OnLoad() { }
+
     internal virtual void Start() => OnPostRegister();
     internal virtual void Awake()
     {
