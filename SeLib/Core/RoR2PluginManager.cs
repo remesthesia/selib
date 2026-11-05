@@ -16,10 +16,13 @@ internal static class RoR2PluginManager
     {
         plugin.IsDebug = plugin.GetType().IsDefined(typeof(DebuggableAttribute), true);
         
-        _isDebug = _isDebug || plugin.IsDebug;
+        var debugChanged = plugin.IsDebug && !_isDebug;
+        if (debugChanged) _isDebug = true;
+        
         _plugins.Add(plugin.GUID, plugin);
             
         Debug.Log($"Registered {plugin.Name} ver. {plugin.Version}{(plugin.IsDebug ? "*" : "")} ({plugin.GUID})");
+        if (debugChanged) Debug.Log("RoR2PluginManager is now in debug mode.");
     }
     
     public static void SubscribeToLifecycle()
@@ -27,7 +30,7 @@ internal static class RoR2PluginManager
         RoR2Application.onStart += () => SafeInvokeAll(x => x.OnStart());
         RoR2Application.onLoad += () => SafeInvokeAll(x => x.OnLoad());
         
-        if (_isDebug) Debug.Log("Subscribed to RoR2 lifecycle events.");
+        if (_isDebug) Debug.Log($"Subscribed {_plugins.Count} plugins to the RoR2 lifecycle.");
     }
     
     private static void SafeInvokeAll(Action<BaseRoR2Plugin> action)
