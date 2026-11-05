@@ -8,28 +8,30 @@ namespace SeLib.Core;
 
 internal static class RoR2PluginManager
 {
-    private static readonly List<BaseRoR2Plugin> _plugins = [];
-    
-    public static void AddPlugin(BaseRoR2Plugin plugin)
+    private static readonly Dictionary<string, BaseRoR2Plugin> _plugins = [];
+
+    public static void Register(BaseRoR2Plugin plugin)
     {
-        _plugins.Add(plugin);
+        _plugins.Add(plugin.GUID, plugin);
+        
+        Debug.Log($"Registered {plugin.Name} ver. {plugin.Version} ({plugin.GUID})");
     }
     
-    // TODO: onUpdate events or whatever and naming
-    public static void Init()
+    // TODO: onUpdate events
+    public static void SubscribeToLifecycle()
     {
-        RoR2Application.onStart += () => Dispatch(x => x.OnStart());
-        RoR2Application.onLoad += () => Dispatch(x => x.OnLoad());
+        RoR2Application.onStart += () => SafeInvokeAll(x => x.OnStart());
+        RoR2Application.onLoad += () => SafeInvokeAll(x => x.OnLoad());
     }
     
     // TODO: ????
-    private static void Dispatch(Action<BaseRoR2Plugin> action)
+    private static void SafeInvokeAll(Action<BaseRoR2Plugin> action)
     {
         foreach (var plugin in _plugins)
         {
             try
             {
-                action(plugin);
+                action(plugin.Value);
             }
             catch (Exception ex)
             {

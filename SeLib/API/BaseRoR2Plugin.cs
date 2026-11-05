@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using BepInEx;
 using SeLib.Core;
@@ -21,6 +22,10 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
     internal BaseRoR2Plugin()
     {
     }
+    
+    public string GUID => Info.Metadata.GUID;
+    public string Name => Info.Metadata.Name;
+    public Version Version => Info.Metadata.Version;
 
     public virtual void OnRegister() { }
     public virtual void OnPostRegister() { }
@@ -31,7 +36,7 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
     internal virtual void Start() => OnPostRegister();
     internal virtual void Awake()
     {
-        RoR2PluginManager.AddPlugin(this);
+        RoR2PluginManager.Register(this);
         OnRegister();
     }
 }
