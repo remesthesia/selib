@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using RoR2;
 using SeLib.API;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace SeLib.Core;
 
@@ -14,30 +15,23 @@ internal static class RoR2PluginManager
     {
         _plugins.Add(plugin.GUID, plugin);
         
-        Debug.Log($"Registered {plugin.Name} ver. {plugin.Version} ({plugin.GUID})");
+        plugin.IsDebug = plugin.GetType().IsDefined(typeof(DebuggableAttribute), true);
+
+        Debug.Log($"Registered {plugin.Name} ver. {plugin.Version}{(plugin.IsDebug ? "*" : "")} ({plugin.GUID})");
     }
     
-    // TODO: onUpdate events
     public static void SubscribeToLifecycle()
     {
         RoR2Application.onStart += () => SafeInvokeAll(x => x.OnStart());
         RoR2Application.onLoad += () => SafeInvokeAll(x => x.OnLoad());
     }
     
-    // TODO: ????
     private static void SafeInvokeAll(Action<BaseRoR2Plugin> action)
     {
-        foreach (var plugin in _plugins)
+        foreach (var (_, plugin) in _plugins)
         {
-            try
-            {
-                action(plugin.Value);
-            }
-            catch (Exception ex)
-            {
-                // TODO: Replace this with plugin specific logging at some point
-                Debug.LogException(ex);
-            }
+            try { action(plugin); }
+            catch (Exception ex) { Debug.LogException(ex); }
         }
     }
 }

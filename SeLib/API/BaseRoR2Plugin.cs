@@ -11,7 +11,7 @@ namespace SeLib.API;
 public abstract class BaseRoR2Plugin<T> : BaseRoR2Plugin where T : BaseRoR2Plugin<T>
 {
     /// <summary> Gets the registered instance of this plugin. </summary>
-    public static T Instance { get; internal set; }
+    public static T Instance { get; private set; }
 
     internal override void Awake()
     {
@@ -33,6 +33,9 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
     public string Name => Info.Metadata.Name;
     /// <summary> Gets the version of this plugin. </summary>
     public Version Version => Info.Metadata.Version;
+    
+    /// <summary> Gets whether this plugin was built with a debug configuration. </summary>
+    public bool IsDebug { get; internal set; }
 
     /// <summary> SeLib calls OnRegister after the plugin is first initialized. </summary>
     public virtual void OnRegister() { }
