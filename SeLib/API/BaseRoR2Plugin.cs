@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using BepInEx;
 using SeLib.Core;
 
 namespace SeLib.API;
 
+[SuppressMessage("Class Declaration", "BepInEx001:Class inheriting from BaseUnityPlugin missing BepInPlugin attribute")]
 public abstract class BaseRoR2Plugin<T> : BaseRoR2Plugin where T : BaseRoR2Plugin<T>
 {
     public static T Instance { get; internal set; }
