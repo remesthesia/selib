@@ -5,9 +5,11 @@ using SeLib.Core;
 
 namespace SeLib.API;
 
+/// <inheritdoc/>
 [SuppressMessage("Class Declaration", "BepInEx001:Class inheriting from BaseUnityPlugin missing BepInPlugin attribute")]
 public abstract class BaseRoR2Plugin<T> : BaseRoR2Plugin where T : BaseRoR2Plugin<T>
 {
+    /// <summary> Gets the registered instance of this plugin. </summary>
     public static T Instance { get; internal set; }
 
     internal override void Awake()
