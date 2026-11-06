@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using BepInEx;
+using SeLib.API.Assets;
 using SeLib.Core;
 
 namespace SeLib.API;
@@ -36,6 +38,10 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
     
     /// <summary> Gets whether this plugin was built with a debug configuration. </summary>
     public bool IsDebug { get; internal set; }
+    
+    public string Directory => System.IO.Directory.GetParent(Info.Location)?.FullName;
+    
+    public BaseAssetProvider Assets { get; internal set; }
 
     /// <summary> SeLib calls OnRegister after the plugin is first initialized. </summary>
     public virtual void OnRegister() { }
