@@ -12,7 +12,11 @@
 
         <RootNamespace>SeLib</RootNamespace>
 	</PropertyGroup>
-	
+
+    <ItemGroup>
+        <Reference Include="..\libs\*.dll" Private="false" />
+    </ItemGroup>
+    
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
@@ -28,6 +32,10 @@
 		
 		<PackageReference Include="MMHOOK.RoR2" Version="[2022.9.20]" NoWarn="NU1701" />
 		<PackageReference Include="RiskOfRain2.GameLibs" Version="[1.2.4-r.0]" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Core\Patches\" />
 	</ItemGroup>
 
 </Project>

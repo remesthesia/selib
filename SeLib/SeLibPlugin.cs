@@ -1,16 +1,15 @@
+using System;
 using BepInEx;
 using SeLib.API;
 using SeLib.Core;
 
-namespace SeLib
+namespace SeLib;
+
+[BepInPlugin("com.remesthesia.selib2", "selib", "1.0.0")]
+public sealed class SeLibPlugin : BaseRoR2Plugin<SeLibPlugin>
 {
-    [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
-    public sealed class SeLibPlugin : BaseRoR2Plugin<SeLibPlugin>
+    private void Awake()
     {
-        public override void OnPostRegister()
-        {
-            RoR2PluginManager.Init();
-            RoR2PluginManager.SubscribeToLifecycle();
-        }
+        SeLibBootstrap.Init();
     }
 }
