@@ -22,6 +22,12 @@ namespace SeLib.Core;
 
 internal static class SeLibBootstrap
 {
+	// Entrypoint for when all mods are loaded. Early register
+	// Entrypoint for when assets are loaded. Main register
+	// Entrypoint for when content is loaded. Maybe not?
+	// Entrypoint for when done. Post register
+	// Add attribute that loads at each entrypoint? Once all mods are loaded (for hooks). And after Everything (for not hooks)
+	
 	private static readonly ReadableProgress<float> genericProgress = new ReadableProgress<float>();
 	private static readonly ReadableProgress<float> contentPackProgress = new ReadableProgress<float>();
 	private static bool isIntroReady;
@@ -55,6 +61,7 @@ internal static class SeLibBootstrap
 	{
 		orig();
 
+		// TODO: Not whatever this is. I just realized I can prolly load the scenedf rather than scene bundle
 		SceneDef[] sceneDefs = new SceneDef[RoR2.SceneCatalog.allSceneDefs.Length + 2];
 		sceneDefs[0] = Addressables.LoadAssetAsync<SceneDef>("RoR2/Base/intro/intro.asset").WaitForCompletion();
 		sceneDefs[1] = Addressables.LoadAssetAsync<SceneDef>("RoR2/Base/splash/splash.asset").WaitForCompletion();
@@ -68,6 +75,7 @@ internal static class SeLibBootstrap
 	{
 		ContentManager.collectContentPackProviders += (ContentManager.AddContentPackProviderDelegate addContentPackProvider) =>
 			{
+				// TODO: Content provider entrypoint
 				addContentPackProvider(new RoR2Content());
 				addContentPackProvider(new JunkContent());
 				addContentPackProvider(new DLC1Content());
@@ -202,6 +210,11 @@ internal static class SeLibBootstrap
 	
 	private static IEnumerator HandleLoading(RoR2Application self)
 	{
+		// TODO: Lang provider entrypoint
+		Language.collectLanguageRootFolders += (List<string> list) =>
+		{
+			list.Add(System.IO.Path.Combine(Application.streamingAssetsPath, "Language"));
+		};
 		Language.Init();
 		genericProgress.Report(0.09F);
 		yield return null;
@@ -210,6 +223,9 @@ internal static class SeLibBootstrap
 		isIntroReady = true;
 		genericProgress.Report(0.16F);
 		yield return null;
+		
+		
+		// TODO: Asset provider entrypoint
 		
 		// Say Intro Ready
 		var fileSystem = new PhysicalFileSystem();
