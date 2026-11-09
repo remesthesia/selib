@@ -1,15 +1,14 @@
 using System;
 using BepInEx;
-using SeLib.API;
-using SeLib.Core;
+using SeLib.Core.Bootstrap;
 
 namespace SeLib;
 
-[BepInPlugin("com.remesthesia.selib2", "selib", "1.0.0")]
-public sealed class SeLibPlugin : BaseRoR2Plugin<SeLibPlugin>
+[BepInPlugin("com.remesthesia.selib","selib", "1.0.0")]
+public class SeLibPlugin : BaseUnityPlugin
 {
     private void Awake()
     {
-        SeLibBootstrap.Init();
+        BootstrapPatcher.Init();
     }
 }

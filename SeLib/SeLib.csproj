@@ -35,7 +35,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="Core\Patches\" />
+	  <Folder Include="API\" />
 	</ItemGroup>
 
 </Project>
