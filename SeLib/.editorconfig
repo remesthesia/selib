@@ -3,5 +3,5 @@ root = true
 [*.cs]
 dotnet_diagnostic.CS1591.severity = none
 
-[API/*.cs]
+[API/**.cs]
 dotnet_diagnostic.CS1591.severity = warning
