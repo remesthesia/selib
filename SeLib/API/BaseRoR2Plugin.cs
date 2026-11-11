@@ -17,4 +17,8 @@ public abstract class BaseRoR2Plugin : BaseUnityPlugin
 { 
     public BaseAssetProvider Assets { get; internal set; }
     public ReadOnlyArray<BaseContentProvider> Content { get; internal set; }
+
+    public virtual void OnInit()
+    {
+    }
 }
