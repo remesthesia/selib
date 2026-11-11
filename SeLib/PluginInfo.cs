@@ -1,5 +1,4 @@
-[assembly: HG.Reflection.SearchableAttribute.OptIn]
-namespace SeLib;
+[assembly: HG.Reflection.SearchableAttribute.OptIn] namespace SeLib;
 
 public static class PluginInfo
 {
