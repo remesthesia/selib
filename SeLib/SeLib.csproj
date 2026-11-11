@@ -17,9 +17,7 @@
         <Reference Include="..\libs\*.dll" Private="false" />
     </ItemGroup>
     
-	<PropertyGroup>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	</PropertyGroup>
+	
 	
 	<ItemGroup>
 		<PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
