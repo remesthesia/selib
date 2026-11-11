@@ -7,8 +7,5 @@ namespace SeLib;
 [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
 public sealed class SeLibPlugin : BaseRoR2Plugin<SeLibPlugin>
 {
-    public override void OnInit()
-    {
-        SeLibBootstrap.Init();
-    }
+    public override void OnRegister() => SeLibBootstrap.Init();
 }
