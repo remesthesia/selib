@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using RoR2;
 using SeLib.API;
+using SeLib.API.Meta;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
@@ -84,14 +85,14 @@ internal static class BootstrapPatcher
             foreach (var image in canvas.transform.GetChild(1).GetChild(0).GetComponentsInChildren<Image>(true))
             {
                 if (image.gameObject.name.ToLower().Contains("commando") || image.transform.parent.gameObject.name.ToLower().Contains("commando"))
-                    image.sprite = BrandingHelper.GetSprites(MiniSceneSprite.Commando).OrderBy(x => UnityEngine.Random.value).FirstOrDefault() ?? image.sprite;
+                    image.sprite = BrandingHelper.TryPickMiniSceneSpriteReplacement(MiniSceneSpriteType.Commando) ?? image.sprite;
                 if (image.gameObject.name.ToLower().Contains("lemurian") ||
                     image.transform.parent.gameObject.name.ToLower().Contains("lemurian"))
-                    image.sprite = BrandingHelper.GetSprites(MiniSceneSprite.Lemurian).OrderBy(x => UnityEngine.Random.value).FirstOrDefault() ?? image.sprite;
+                    image.sprite = BrandingHelper.TryPickMiniSceneSpriteReplacement(MiniSceneSpriteType.Lemurian) ?? image.sprite;
 
                 if (image.gameObject.name.ToLower().Contains("golem") ||
                     image.transform.parent.gameObject.name.ToLower().Contains("golem"))
-                    image.sprite = BrandingHelper.GetSprites(MiniSceneSprite.Golem).OrderBy(x => UnityEngine.Random.value).FirstOrDefault() ?? image.sprite;
+                    image.sprite = BrandingHelper.TryPickMiniSceneSpriteReplacement(MiniSceneSpriteType.Golem) ?? image.sprite;
 
             }
             
