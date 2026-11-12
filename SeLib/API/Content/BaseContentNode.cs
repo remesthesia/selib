@@ -1,3 +1,4 @@
+using System.Collections;
 using SeLib.Core;
 
 namespace SeLib.API.Content;
@@ -7,4 +8,6 @@ public abstract class BaseContentNode : BaseNode<BaseContentNode, BaseContentPro
     internal BaseContentNode()
     {
     }
+    
+    public abstract IEnumerator Init();
 }

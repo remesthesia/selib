@@ -35,7 +35,7 @@ internal static class RoR2PluginManager
     public static void Register<T>(BaseRoR2Plugin<T> plugin) where T : BaseRoR2Plugin<T>
     {
         _plugins.Add(plugin);
-        plugin.OnInit();
+        plugin.OnRegister();
         
         var children = typeof(T).Assembly.GetTypes()
             .Select(t => (Type: t, Attr: t.GetCustomAttribute<SeLibNode>(false)))
@@ -68,6 +68,8 @@ internal static class RoR2PluginManager
             }
             content.Init();
         }
+        
+        SeLibInitializerAttribute.Run(plugin, SeLibInitializerType.AfterPluginRegister);
 
         return;
         V[] InstantiateChildren<V>(Type parent) where V : class => children[parent].Select(Activator.CreateInstance).OfType<V>().ToArray();

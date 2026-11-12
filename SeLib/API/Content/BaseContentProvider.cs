@@ -1,6 +1,8 @@
 using System.Collections;
+using RoR2;
 using RoR2.ContentManagement;
 using SeLib.Core;
+using UnityEngine;
 
 namespace SeLib.API.Content;
 
@@ -13,6 +15,28 @@ public abstract class BaseContentProvider<T> : BaseContentProvider where T : Bas
 
     public override IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
     {
+        foreach (var holderName in Owner.Assets.GetAllHolderNames())
+        {
+            var request = Owner.Assets.LoadAllAssetsFromHolderAsync<GameObject>(holderName);
+            while (!request.IsDone) yield return null;
+            
+            
+            Debug.logger.Log(holderName + " Is Done");
+
+            foreach (var asset in request.Assets)
+            {
+                Debug.logger.Log("Asset: " + asset.name);
+                Debug.Log(asset.GetComponent<CharacterBody>());
+                if (asset.GetComponent<CharacterBody>())
+                {
+                    Debug.Log("Body");
+                    _contentPack.bodyPrefabs.Add([asset]);
+                }
+                if (asset.GetComponent<CharacterMaster>()) _contentPack.masterPrefabs.Add([asset]);
+            }
+        }
+        
+        
         var loadHelper = AddressablesLoadHelper.CreateUsingDefaultResourceLocator($"ContentPack:{Identifier}");
         loadHelper.AddContentPackLoadOperation(_contentPack);
         

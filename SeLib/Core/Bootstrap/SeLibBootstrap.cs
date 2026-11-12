@@ -8,11 +8,13 @@ using System.Linq;
 using HG;
 using RoR2;
 using RoR2.ContentManagement;
+using SeLib.API;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using Zio.FileSystems;
+using Debug = UnityEngine.Debug;
 
 namespace SeLib.Core.Bootstrap;
 
@@ -23,6 +25,8 @@ internal static class SeLibBootstrap
 
 	public static void Init()
 	{
+		Debug.Log("AAAA");
+		SeLibInitializerAttribute.Scan();
 		BootstrapPatcher.Apply();
 	}
 	
@@ -188,6 +192,14 @@ internal static class SeLibBootstrap
 		
 		genericProgressReceiver.Report(0.4F);
 		yield return null;
+
+		foreach (var content in RoR2PluginManager.GetContentProviders())
+		{
+			foreach (var child in content.Children)
+			{
+				yield return child.Init();
+			}
+		}
 
 		yield return RoR2Application.instance.LoadGameContent();
 		yield return null;
